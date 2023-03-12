@@ -47,7 +47,7 @@ public class URLShortenerService {
         return true;
     }
 
-    public URLMapping getURLMapping(String slug) {
+    public URLMapping getURLMapping(String slug, String requestPath) {
         Optional<URLMapping> optionalURL = repository.findById(slug);
         if (optionalURL.isEmpty()) {
             return null;
@@ -62,6 +62,8 @@ public class URLShortenerService {
         urlMapping.setNumTimesAccessed(urlMapping.getNumTimesAccessed() + 1);
         repository.save(urlMapping);
 
+        urlMapping.setInterpretedDestinationURL(getInterpretedURL(requestPath, urlMapping.getDestinationURL()));
+
         return urlMapping;
     }
 
@@ -73,5 +75,23 @@ public class URLShortenerService {
         i.forEach(u->allURLs.add(u));
 
         return allURLs;
+    }
+
+    String getInterpretedURL (String fullPath, String destinationURL) {
+
+        if (fullPath.startsWith("/")) {
+            fullPath = fullPath.substring(1, fullPath.length());
+        }
+        String[] paths = fullPath.split("/");
+        if (paths == null) {
+            return destinationURL;
+        }
+
+        log.info("paths length={}, paths={}", paths.length, paths);
+
+        for (int i = 1; i < paths.length; i++) {
+            destinationURL = destinationURL.replace("{"+i+"}", paths[i]);
+        }
+        return destinationURL;
     }
 }
