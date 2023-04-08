@@ -7,21 +7,24 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration {
+public class SecurityConfigurer {
+
+    @Autowired
+    AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/**").anonymous();
-        http.authorizeHttpRequests().requestMatchers(HttpMethod.GET, "/**").anonymous();
-        http.csrf().disable();
-        return http.build();
+        return http
+                .csrf().disable()
+                .authorizeHttpRequests(authCustomizer ->
+                        authCustomizer.requestMatchers(HttpMethod.POST, "/api/add", "/*/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/add", "/*/**").permitAll()
+                )
+                .build();
     }
 }

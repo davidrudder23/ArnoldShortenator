@@ -1,19 +1,25 @@
 package org.noses.urlshortener.database;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.ToString;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.redis.core.RedisHash;
 
 import java.util.Date;
 
-@RedisHash("URLMapping")
 @ToString
 @Data
+@Entity
 public class URLMapping {
 
     @Id
+    @NotNull
+    @Column
     private String slug;
+
     private String fullSourceURL;
 
     private String destinationURL;

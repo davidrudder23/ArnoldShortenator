@@ -6,6 +6,9 @@ import org.noses.urlshortener.database.URLMapping;
 import org.noses.urlshortener.service.URLShortenerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,20 +17,21 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @RestController
+@RequestMapping("api")
 @Slf4j
-public class URLShortenerController {
+public class URLShortenerAPIController {
 
     @Autowired
     URLShortenerService service;
 
-    @GetMapping(value = "/api/")
+    @GetMapping(value = "/")
     public List<URLMapping> list() {
         return service.getAll();
     }
-
-    @GetMapping(value="/api/{slug}/**")
-    public URLMapping getBySlugREST(HttpServletRequest request, @PathVariable String slug) {
+    @GetMapping(value="/{slug:^.*(?!logout|user)}/**")
+    public URLMapping getBySlug(HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal, @PathVariable String slug) {
         log.info("slug={}", slug);
+        log.info("principal={}", principal);
         String path = request.getRequestURI();
         log.info("path={}", path);
 
@@ -40,24 +44,7 @@ public class URLShortenerController {
 
         return mapping;
     }
-
-    @GetMapping(value="/{slug}/**")
-    public ModelAndView getBySlugHttp(HttpServletRequest request, ModelMap model, @PathVariable String slug) {
-
-        log.info("http slug={}", slug);
-        String path = request.getRequestURI();
-        log.info("path={}", path);
-        URLMapping mapping = service.getURLMapping(slug, path);
-        log.info("mapping={}", mapping);
-        if (mapping == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "entity not found"
-            );
-        }
-        return new ModelAndView("redirect:"+mapping.getInterpretedDestinationURL(), model);
-    }
-
-    @PostMapping("/api/add")
+    @PostMapping(value="/add", produces="application/json")
     public Boolean add(@RequestBody URLMapping mapping) {
         return service.saveURLMapping(mapping);
     }
