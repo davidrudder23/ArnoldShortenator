@@ -1,9 +1,9 @@
-package org.noses.urlshortener.controller;
+package org.noses.arnoldshortenator.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.noses.urlshortener.database.URLMapping;
-import org.noses.urlshortener.service.ArnoldShortenatorService;
+import org.noses.arnoldshortenator.database.URLMapping;
+import org.noses.arnoldshortenator.service.ArnoldShortenatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

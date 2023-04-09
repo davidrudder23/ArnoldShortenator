@@ -1,4 +1,4 @@
-package org.noses.urlshortener.database;
+package org.noses.arnoldshortenator.database;
 
 import org.springframework.data.repository.CrudRepository;
 

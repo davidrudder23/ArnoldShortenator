@@ -1,10 +1,10 @@
-package org.noses.urlshortener.service;
+package org.noses.arnoldshortenator.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.noses.urlshortener.database.AccessLog;
-import org.noses.urlshortener.database.AccessLogRepository;
-import org.noses.urlshortener.database.URLMapping;
-import org.noses.urlshortener.database.URLMappingRepository;
+import org.noses.arnoldshortenator.database.AccessLog;
+import org.noses.arnoldshortenator.database.AccessLogRepository;
+import org.noses.arnoldshortenator.database.URLMapping;
+import org.noses.arnoldshortenator.database.URLMappingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;

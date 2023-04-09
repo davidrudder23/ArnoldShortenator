@@ -1,4 +1,4 @@
-package org.noses.urlshortener.database;
+package org.noses.arnoldshortenator.database;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

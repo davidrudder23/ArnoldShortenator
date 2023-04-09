@@ -1,8 +1,7 @@
-package org.noses.urlshortener.database;
+package org.noses.arnoldshortenator.database;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.tuple.GeneratedValueGeneration;
 
 import java.util.Date;
 

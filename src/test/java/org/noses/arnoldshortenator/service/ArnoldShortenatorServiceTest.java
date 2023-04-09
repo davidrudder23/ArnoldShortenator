@@ -1,4 +1,4 @@
-package org.noses.urlshortener.service;
+package org.noses.arnoldshortenator.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
