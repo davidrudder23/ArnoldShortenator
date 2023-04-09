@@ -28,5 +28,6 @@ It's a Spring Boot app.  Clone it, configure your mysql server in src/main/resou
 `mvn spring-boot:run`.  Then, hit "http://localhost:8080"
 
 
-
+## Public Demo
+I have [a public demo](https://arnoldshortenator-production.up.railway.app/#) up and running 
 
