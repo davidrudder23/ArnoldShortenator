@@ -3,11 +3,11 @@ package org.noses.urlshortener.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
 
-public class URLShortenerServiceTest {
+public class ArnoldShortenatorServiceTest {
 
     @Test
     public void testGetInterpretedURL() {
-        URLShortenerService service = new URLShortenerService();
+        ArnoldShortenatorService service = new ArnoldShortenatorService();
         String inputPath = "/foo";
         String destinationPath = "http://www.google.com/?q={1}";
         String expectedResult = "http://www.google.com/?q={1}";

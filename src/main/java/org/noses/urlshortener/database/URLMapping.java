@@ -20,8 +20,6 @@ public class URLMapping {
     @Column
     private String slug;
 
-    private String fullSourceURL;
-
     private String destinationURL;
 
     private Date created;
