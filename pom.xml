@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.noses</groupId>
-	<artifactId>urlshortener</artifactId>
+	<artifactId>arnoldshortenator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>urlshortener</name>
+	<name>arnoldshortenator</name>
 	<description>URL Shortener</description>
 	<properties>
 		<java.version>17</java.version>
