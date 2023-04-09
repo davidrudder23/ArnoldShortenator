@@ -1,18 +1,15 @@
-package org.noses.urlshortener.controller;
+package org.noses.arnoldshortenator.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.noses.urlshortener.database.URLMapping;
-import org.noses.urlshortener.service.URLShortenerService;
+import org.noses.arnoldshortenator.database.URLMapping;
+import org.noses.arnoldshortenator.service.ArnoldShortenatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +17,10 @@ import java.util.List;
 @RestController
 @RequestMapping("api")
 @Slf4j
-public class URLShortenerAPIController {
+public class APIController {
 
     @Autowired
-    URLShortenerService service;
+    ArnoldShortenatorService service;
 
     @GetMapping(value = "/")
     public List<URLMapping> list() {
@@ -36,7 +33,7 @@ public class URLShortenerAPIController {
         String path = request.getRequestURI();
         log.info("path={}", path);
 
-        URLMapping mapping = service.getURLMapping(slug, path);
+        URLMapping mapping = service.getURLMapping(slug, path, service.getAccessedByFromOAuthPrincipal(principal), request.getHeader("Referer"));
         if (mapping == null) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "entity not found"

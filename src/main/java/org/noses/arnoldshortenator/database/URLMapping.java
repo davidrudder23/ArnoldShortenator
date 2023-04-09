@@ -1,4 +1,4 @@
-package org.noses.urlshortener.database;
+package org.noses.arnoldshortenator.database;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,8 +19,6 @@ public class URLMapping {
     @NotNull
     @Column
     private String slug;
-
-    private String fullSourceURL;
 
     private String destinationURL;
 

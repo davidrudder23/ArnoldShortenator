@@ -1,19 +1,26 @@
-package org.noses.urlshortener.service;
+package org.noses.arnoldshortenator.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.noses.urlshortener.database.URLMapping;
-import org.noses.urlshortener.database.URLMappingRepository;
+import org.noses.arnoldshortenator.database.AccessLog;
+import org.noses.arnoldshortenator.database.AccessLogRepository;
+import org.noses.arnoldshortenator.database.URLMapping;
+import org.noses.arnoldshortenator.database.URLMappingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 @Component
 @Slf4j
-public class URLShortenerService {
+public class ArnoldShortenatorService {
 
     @Autowired
-    URLMappingRepository repository;
+    URLMappingRepository urlMappingRepository;
+
+    @Autowired
+    AccessLogRepository accessLogRepository;
+
     public boolean saveURLMapping(URLMapping urlMapping) {
         if (urlMapping==null) {
             log.info("Trying to save a null url mapping");
@@ -24,7 +31,7 @@ public class URLShortenerService {
             log.info("Trying to save a URL mapping with null slug {}", urlMapping);
             return false;
         }
-        Optional<URLMapping> existingMapping = repository.findById(urlMapping.getSlug());
+        Optional<URLMapping> existingMapping = urlMappingRepository.findById(urlMapping.getSlug());
 
         Date now = new Date();
 
@@ -42,13 +49,13 @@ public class URLShortenerService {
         // Make sure we're not saving the interpreted url
         urlMapping.setInterpretedDestinationURL(null);
 
-        repository.save(urlMapping);
+        urlMappingRepository.save(urlMapping);
 
         return true;
     }
 
-    public URLMapping getURLMapping(String slug, String requestPath) {
-        Optional<URLMapping> optionalURL = repository.findById(slug);
+    public URLMapping getURLMapping(String slug, String requestPath, String accessedBy, String referrer) {
+        Optional<URLMapping> optionalURL = urlMappingRepository.findById(slug);
         if (optionalURL.isEmpty()) {
             return null;
         }
@@ -60,9 +67,15 @@ public class URLShortenerService {
         }
 
         urlMapping.setNumTimesAccessed(urlMapping.getNumTimesAccessed() + 1);
-        repository.save(urlMapping);
+        urlMappingRepository.save(urlMapping);
 
         urlMapping.setInterpretedDestinationURL(getInterpretedURL(requestPath, urlMapping.getDestinationURL()));
+
+        AccessLog log = new AccessLog();
+        log.setUrlMapping(urlMapping);
+        log.setAccessedBy(accessedBy);
+        log.setAccessDate(new Date());
+        accessLogRepository.save(log);
 
         return urlMapping;
     }
@@ -70,7 +83,7 @@ public class URLShortenerService {
     public List<URLMapping> getAll() {
         System.out.println("list");
         List<URLMapping> allURLs = new ArrayList<>();
-        Iterable<URLMapping> i = repository.findAll();
+        Iterable<URLMapping> i = urlMappingRepository.findAll();
 
         i.forEach(u->allURLs.add(u));
 
@@ -80,7 +93,7 @@ public class URLShortenerService {
     public List<URLMapping> search(String substring) {
         System.out.println("list");
         List<URLMapping> allURLs = new ArrayList<>();
-        Iterable<URLMapping> i = repository.findBySlugLike("%"+substring+"%");
+        Iterable<URLMapping> i = urlMappingRepository.findBySlugLike("%"+substring+"%");
 
         i.forEach(u->allURLs.add(u));
 
@@ -104,5 +117,14 @@ public class URLShortenerService {
             destinationURL = destinationURL.replace("{"+i+"}", paths[i]);
         }
         return destinationURL;
+    }
+
+
+    public String getAccessedByFromOAuthPrincipal(OAuth2User principal) {
+        String accessedBy = "unknown";
+        if (principal != null && principal.getName() != null) {
+            accessedBy = principal.getName();
+        }
+        return accessedBy;
     }
 }
