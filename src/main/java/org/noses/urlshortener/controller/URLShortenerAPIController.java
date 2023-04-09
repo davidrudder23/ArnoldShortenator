@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -44,6 +45,17 @@ public class URLShortenerAPIController {
 
         return mapping;
     }
+
+    @GetMapping(value="/search/{slug}")
+    public List<URLMapping> search (HttpServletRequest request, @PathVariable String slug) {
+        if (slug.length()<3) {
+            return new ArrayList<>();
+        }
+
+        List<URLMapping> mappings = service.search(slug);
+        return mappings;
+    }
+
     @PostMapping(value="/add", produces="application/json")
     public Boolean add(@RequestBody URLMapping mapping) {
         return service.saveURLMapping(mapping);

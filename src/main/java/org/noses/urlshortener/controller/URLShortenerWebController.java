@@ -24,12 +24,22 @@ public class URLShortenerWebController {
     URLShortenerService service;
 
     @GetMapping(value="/index.html")
+    public ModelAndView indexHtml() {
+        return new ModelAndView("index.html");
+    }
+    @GetMapping(value="/")
     public ModelAndView index() {
         return new ModelAndView("index.html");
     }
 
+    @GetMapping(value="/static/{page}")
+    public ModelAndView staticPage(HttpServletRequest request, @PathVariable String page) {
+        return new ModelAndView(page);
+    }
 
-    @GetMapping(value="/{slug:^.*(?!logout|user)}/**", produces="text/html")
+
+    //    @GetMapping(value="/{slug:^.+(?!static|logout|user)}/**", produces="text/html")
+    @GetMapping(value="/{slug}/**")
     public ModelAndView getBySlugHttp(HttpServletRequest request, ModelMap model, @AuthenticationPrincipal OAuth2User principal, @PathVariable String slug) {
 
         log.info("http slug={}", slug);

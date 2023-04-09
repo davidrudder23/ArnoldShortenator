@@ -6,3 +6,14 @@
 #          github:
 #            clientId: 4f9297cad846e3dc543e
 #            clientSecret:  3b867e2ce44f4d32f5ff1d6248fa505808e3e79a
+
+spring:
+  thymeleaf: # Thymeleaf
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+    prefix: file:src/main/resources/templates/
+  resources: # Static resources
+    static-locations: file:src/main/resources/static/
+    cache:
+      period: 0

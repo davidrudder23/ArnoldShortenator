@@ -77,6 +77,17 @@ public class URLShortenerService {
         return allURLs;
     }
 
+    public List<URLMapping> search(String substring) {
+        System.out.println("list");
+        List<URLMapping> allURLs = new ArrayList<>();
+        Iterable<URLMapping> i = repository.findBySlugLike("%"+substring+"%");
+
+        i.forEach(u->allURLs.add(u));
+
+        return allURLs;
+    }
+
+
     String getInterpretedURL (String fullPath, String destinationURL) {
 
         if (fullPath.startsWith("/")) {
