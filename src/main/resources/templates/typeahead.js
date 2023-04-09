@@ -23,8 +23,9 @@ function getMatches(slug) {
                 }
                 results += `
                         <div class="col-lg-6">
-                                        <h4>`+value.slug+`</h4>
-                                        <p>`+value.destinationURL+`
+                                        <h4>`+value.slug+`</h4><i class="bi bi-trash" onclick='deleteMapping("`+value.slug+`")'></i>
+                                        <p>`+value.destinationURL+`</p>
+
                                     </div>
                                     `;
             });

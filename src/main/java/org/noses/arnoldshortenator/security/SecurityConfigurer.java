@@ -21,8 +21,10 @@ public class SecurityConfigurer {
         return http
                 .csrf().disable()
                 .authorizeHttpRequests(authCustomizer ->
-                        authCustomizer.requestMatchers(HttpMethod.POST, "/api/add", "/*/**").permitAll()
+                        authCustomizer
+                                .requestMatchers(HttpMethod.POST, "/api/add", "/*/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/", "", "/api/add", "/*/**").permitAll()
+                                .requestMatchers(HttpMethod.DELETE, "/", "", "/api/add", "/*/**").permitAll()
                 )
                 .build();
     }
