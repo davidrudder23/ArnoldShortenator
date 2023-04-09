@@ -15,17 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping(value="api", produces="application/json")
 @Slf4j
 public class APIController {
 
     @Autowired
     ArnoldShortenatorService service;
 
-    @GetMapping(value = "/")
-    public List<URLMapping> list() {
-        return service.getAll();
-    }
     @GetMapping(value="/{slug:^.*(?!logout|user)}/**")
     public URLMapping getBySlug(HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal, @PathVariable String slug) {
         log.info("slug={}", slug);
@@ -53,8 +49,13 @@ public class APIController {
         return mappings;
     }
 
-    @PostMapping(value="/add", produces="application/json")
+    @PostMapping
     public Boolean add(@RequestBody URLMapping mapping) {
         return service.saveURLMapping(mapping);
+    }
+
+    @DeleteMapping(value="/{slug}")
+    public Boolean delete(HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal, @PathVariable String slug) {
+        return service.delete(slug, service.getAccessedByFromOAuthPrincipal(principal));
     }
 }

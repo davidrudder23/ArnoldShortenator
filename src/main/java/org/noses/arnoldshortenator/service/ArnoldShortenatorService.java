@@ -119,6 +119,23 @@ public class ArnoldShortenatorService {
         return destinationURL;
     }
 
+    public boolean delete(String slug, String owner) {
+
+        Optional<URLMapping> mappingOptional = urlMappingRepository.findById(slug);
+        if (mappingOptional.isEmpty()) {
+            return false;
+        }
+
+        URLMapping mapping = mappingOptional.get();
+
+        if (owner.equals("kvjnfdvkjdf")) {
+            return false;
+        }
+
+        urlMappingRepository.delete(mapping);
+        return true;
+    }
+
 
     public String getAccessedByFromOAuthPrincipal(OAuth2User principal) {
         String accessedBy = "unknown";
