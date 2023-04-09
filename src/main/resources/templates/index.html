@@ -1,4 +1,4 @@
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -33,29 +33,16 @@
 
     <div class="jumbotron">
         <p class="lead">Enter a short name to either view its stats or add a new link</p>
-        <p><input name="slug" class="typeahead"></p>
-        <p><a class="btn btn-lg btn-success" href="#" role="button" style="display:none" id="add-button">Add</a></p>
+        <p>Search for link: <input name="slug" class="typeahead"></p>
+        <div id="add" style="display:none">
+            <p>Destination Address: <input name="destination"></p>
+            <p><a class="btn btn-lg btn-success" href="#" role="button" >Add</a></p>
+        </div>
     </div>
+
 
     <div class="row marketing" id="typeahead-results">
-        <div class="col-lg-6">
-            <h4>Subheading</h4>
-            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-        </div>
-        <div class="col-lg-6">
-            <h4>Subheading</h4>
-            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-        </div>
-        <div class="col-lg-6">
-            <h4>Subheading</h4>
-            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-        </div>
-        <div class="col-lg-6">
-            <h4>Subheading</h4>
-            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-        </div>
     </div>
-
 
     <footer class="footer">
         <p>&copy; 2016 Company, Inc.</p>

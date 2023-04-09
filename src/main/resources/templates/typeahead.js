@@ -5,6 +5,9 @@ $(document).ready(function(){
 });
 
 function getMatches(slug) {
+    if (slug.length < 3)
+        return;
+            $("#add").hide();
 
     $.ajax({
         url:"/api/search/"+slug,
@@ -12,7 +15,6 @@ function getMatches(slug) {
             console.log(data);
             var results = "";
             var foundExactMatch = false;
-            $("#add-button").hide();
             $.each(data, function(index, value) {
                 console.log(value.fullSourceURL);
                 console.log(value.destinationURL);
@@ -21,7 +23,7 @@ function getMatches(slug) {
                 }
                 results += `
                         <div class="col-lg-6">
-                                        <h4>`+value.fullSourceURL+`</h4>
+                                        <h4>`+value.slug+`</h4>
                                         <p>`+value.destinationURL+`
                                     </div>
                                     `;
@@ -30,7 +32,7 @@ function getMatches(slug) {
             $("#typeahead-results").html(results);
 
             if (!foundExactMatch) {
-                $("#add-button").show();
+                $("#add").show();
             }
         }
     })
