@@ -36,3 +36,6 @@ console.log("deleting "+slug)
             }
         });
 }
+
+function edit(slug) {
+}
