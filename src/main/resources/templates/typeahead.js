@@ -5,7 +5,7 @@ $(document).ready(function(){
 });
 
 function getMatches(slug) {
-    if (slug.length < 3)
+    if (slug.length < 1)
         return;
 
     $("#add-button").html("Add");

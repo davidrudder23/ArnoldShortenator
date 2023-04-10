@@ -93,7 +93,7 @@ public class ArnoldShortenatorService {
     public List<URLMapping> search(String substring) {
         System.out.println("list");
         List<URLMapping> allURLs = new ArrayList<>();
-        Iterable<URLMapping> i = urlMappingRepository.findBySlugLike("%"+substring+"%");
+        Iterable<URLMapping> i = urlMappingRepository.findTop20BySlugLike("%"+substring+"%");
 
         i.forEach(u->allURLs.add(u));
 
@@ -113,8 +113,12 @@ public class ArnoldShortenatorService {
 
         log.info("paths length={}, paths={}", paths.length, paths);
 
-        for (int i = 1; i < paths.length; i++) {
-            destinationURL = destinationURL.replace("{"+i+"}", paths[i]);
+        for (int i = 1; i < 100; i++) {
+            if (i < paths.length) {
+                destinationURL = destinationURL.replace("{" + i + "}", paths[i]);
+            } else {
+                destinationURL = destinationURL.replace("{" + i + "}", "");
+            }
         }
         return destinationURL;
     }

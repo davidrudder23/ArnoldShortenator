@@ -41,7 +41,7 @@ public class APIController {
 
     @GetMapping(value="/search/{slug}")
     public List<URLMapping> search (HttpServletRequest request, @PathVariable String slug) {
-        if (slug.length()<3) {
+        if (slug.length()<1) {
             return new ArrayList<>();
         }
 

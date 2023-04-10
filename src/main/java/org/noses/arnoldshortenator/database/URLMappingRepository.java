@@ -8,5 +8,5 @@ import java.util.List;
 @Repository
 public interface URLMappingRepository extends CrudRepository<URLMapping, String> {
 
-    public List<URLMapping> findBySlugLike(String slugLike);
+    public List<URLMapping> findTop20BySlugLike(String slugLike);
 }
