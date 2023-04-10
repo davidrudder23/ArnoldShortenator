@@ -5,9 +5,10 @@ $(document).ready(function(){
 });
 
 function getMatches(slug) {
-    if (slug.length < 3)
+    if (slug.length < 1)
         return;
-            $("#add").hide();
+
+    $("#add-button").html("Add");
 
     $.ajax({
         url:"/api/search/"+slug,
@@ -19,21 +20,19 @@ function getMatches(slug) {
                 console.log(value.fullSourceURL);
                 console.log(value.destinationURL);
                 if (value.slug == slug) {
-                    foundExactMatch = true;
+                    $("#destination").val(value.destinationURL);
+                    $("#add-button").html("Edit");
                 }
                 results += `
                         <div class="col-lg-6">
-                                        <h4><a href="/`+value.slug+`">`+value.slug+`</a></h4><i class="bi bi-trash" onclick='deleteMapping("`+value.slug+`")'></i>
-                                        <p>`+value.destinationURL+`</p>
+                                        <h4>`+value.slug+`&nbsp;<i class="bi bi-pencil" onclick="edit('`+value.slug+`')"></i><i class="bi bi-trash" onclick='deleteMapping("`+value.slug+`")'></i></h4>
+                                        <p><a href="/`+value.slug+`">`+value.destinationURL+`</a></p>
                                     </div>
                                     `;
             });
 
             $("#typeahead-results").html(results);
 
-            if (!foundExactMatch) {
-                $("#add").show();
-            }
         }
     })
 }
