@@ -11,7 +11,7 @@ function getMatches(slug) {
     $("#add-button").html("Add");
 
     $.ajax({
-        url:"/api/search/"+slug,
+        url:"/api/search/"+encodeURIComponent(slug),
         success: function(data) {
             console.log(data);
             var results = "";

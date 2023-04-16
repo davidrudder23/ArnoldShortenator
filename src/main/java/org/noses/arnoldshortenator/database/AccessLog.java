@@ -13,7 +13,7 @@ public class AccessLog {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     URLMapping urlMapping;
 
     Date accessDate;

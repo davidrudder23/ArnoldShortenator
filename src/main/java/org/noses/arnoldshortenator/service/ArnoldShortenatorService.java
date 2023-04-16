@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 @Component
 @Slf4j
@@ -29,6 +30,11 @@ public class ArnoldShortenatorService {
 
         if (urlMapping.getSlug() == null) {
             log.info("Trying to save a URL mapping with null slug {}", urlMapping);
+            return false;
+        }
+
+        if (!validateSlug(urlMapping.getSlug())) {
+            log.info("slug didn't validate - {}", urlMapping);
             return false;
         }
         Optional<URLMapping> existingMapping = urlMappingRepository.findById(urlMapping.getSlug());
@@ -147,5 +153,9 @@ public class ArnoldShortenatorService {
             accessedBy = principal.getName();
         }
         return accessedBy;
+    }
+
+    public boolean validateSlug(String slug) {
+        return Pattern.compile("[^a-zA-Z0-9_-]+").matcher(slug).matches();
     }
 }
