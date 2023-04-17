@@ -1,6 +1,6 @@
 $(document).ready(function(){
     $("#add-button").click(function() {
-        var slug = $("#slug").val();
+        var slug = $("#add-slug").val();
 
         if (!(/^[a-zA-Z0-9\_\-]+$/.test(slug))) {
             error ("The slug may only be letters, numbers, - or _");
@@ -13,23 +13,24 @@ $(document).ready(function(){
             return;
         }
 
-        var destination = $("#destination").val();
+        var destination = $("#add-destination").val();
 
         if (!isValidUrl(destination)) {
             $("#destination-validation-warning").fadeIn();
             return;
         }
 
+        console.log("adding "+slug+" to "+destination);
         $.ajax({
             type: "POST",
             url: "/api",
             contentType: 'application/json',
             data: JSON.stringify({
-                "slug": $("#slug").val(),
-                "destinationURL": $("#destination").val()
+                "slug": slug,
+                "destinationURL": destination
             }),
             success: function() {
-            getMatches($("#slug").val())
+            getMatches(slug)
             }
         });
     })
