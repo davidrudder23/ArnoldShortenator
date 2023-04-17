@@ -1,12 +1,15 @@
 package org.noses.arnoldshortenator.database;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.util.Date;
 
 @Entity
 @Data
+@JsonIgnoreProperties(value = { "urlMapping" })
 public class AccessLog {
 
     @Id
@@ -14,6 +17,7 @@ public class AccessLog {
     Integer id;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     URLMapping urlMapping;
 
     Date accessDate;

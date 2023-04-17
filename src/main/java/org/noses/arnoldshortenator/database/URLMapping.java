@@ -1,14 +1,15 @@
 package org.noses.arnoldshortenator.database;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.ToString;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.util.Date;
+import java.util.List;
 
 @ToString
 @Data
@@ -29,4 +30,8 @@ public class URLMapping {
     private Integer numTimesAccessed;
 
     private String interpretedDestinationURL;
+
+    @OneToMany(mappedBy = "urlMapping", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    List<AccessLog> accessLog;
 }

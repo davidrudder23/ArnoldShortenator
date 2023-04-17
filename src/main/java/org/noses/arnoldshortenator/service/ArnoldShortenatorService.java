@@ -87,7 +87,6 @@ public class ArnoldShortenatorService {
     }
 
     public List<URLMapping> getAll() {
-        System.out.println("list");
         List<URLMapping> allURLs = new ArrayList<>();
         Iterable<URLMapping> i = urlMappingRepository.findAll();
 
@@ -97,7 +96,6 @@ public class ArnoldShortenatorService {
     }
 
     public List<URLMapping> search(String substring) {
-        System.out.println("list");
         List<URLMapping> allURLs = new ArrayList<>();
         Iterable<URLMapping> i = urlMappingRepository.findTop20BySlugLike("%"+substring+"%");
 
@@ -156,6 +154,6 @@ public class ArnoldShortenatorService {
     }
 
     public boolean validateSlug(String slug) {
-        return Pattern.compile("[^a-zA-Z0-9_-]+").matcher(slug).matches();
+        return Pattern.compile("^[a-zA-Z0-9_-]+$").matcher(slug).matches();
     }
 }
