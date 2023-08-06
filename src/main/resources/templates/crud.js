@@ -31,6 +31,11 @@ $(document).ready(function(){
             }),
             success: function() {
             getMatches(slug)
+            },
+            error: function(httpObj, textStatus) {
+                if(httpObj.status==401) {
+                    window.location="/login.html";
+                }
             }
         });
     })

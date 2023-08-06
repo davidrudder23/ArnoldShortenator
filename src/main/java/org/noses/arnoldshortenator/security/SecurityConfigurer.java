@@ -1,27 +1,32 @@
 package org.noses.arnoldshortenator.security;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.noses.arnoldshortenator.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurer {
 
     @Autowired
-    private CustomOAuth2UserService oauthUserService;
+    CustomOAuth2UserService oauthUserService;
+
+    @Autowired
+    UserService userService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -29,46 +34,41 @@ public class SecurityConfigurer {
         return http
                 .csrf().disable()
                 .authorizeHttpRequests(authCustomizer -> {
-                    try {
-                        authCustomizer
-                                .requestMatchers(HttpMethod.GET, "/", "/api/**", "/login.html", "/login/**", "/oauth/**").permitAll()
-                                .anyRequest().authenticated()
-                                .and().formLogin().loginPage("/login.html")
-                                .permitAll()
-                                .and().oauth2Login().loginPage("/login.html")
-                                .userInfoEndpoint()
-                                .userService(oauthUserService);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                 }
-                )
-                .build();
+                            try {
+                                authCustomizer
+                                        .requestMatchers(HttpMethod.GET, "/**", "/api/**", "/login.html", "/login/**", "/oauth/**").permitAll()
+                                        .anyRequest().authenticated()
+                                        .and().formLogin().loginPage("/login.html")
+                                        .permitAll()
+                                        .and().oauth2Login().loginPage("/login.html")
+                                        .userInfoEndpoint()
+                                        .userService(oauthUserService)
+                                        .and()
+                                        .successHandler(new AuthenticationSuccessHandler() {
+
+                                            @Override
+                                            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                                                                Authentication authentication) throws IOException, ServletException {
+
+                                                CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
+
+                                                userService.processOAuthPostLogin(oauthUser.getEmail());
+
+                                                response.sendRedirect("/");
+                                            }
+                                        })
+                                        .and()
+                                        .anonymous().disable().exceptionHandling().authenticationEntryPoint(new AuthenticationEntryPoint() {
+                                            @Override
+                                            public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+                                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                                            }
+                                        });
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                ).build();
 
     }
-    /*
-
-    @Bean
-    public ClientRegistrationRepository clientRegistrationRepository() {
-        return new InMemoryClientRegistrationRepository(this.googleClientRegistration());
-    }
-
-
-    private ClientRegistration googleClientRegistration() {
-        return ClientRegistration.withRegistrationId("google")
-                .clientId("google-client-id")
-                .clientSecret("google-client-secret")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .redirectUri("http://localhost:8080/login/oauth2/code/{registrationId}")
-                .scope("openid", "email")
-                .authorizationUri("https://accounts.google.com/o/oauth2/v2/auth")
-                .tokenUri("https://www.googleapis.com/oauth2/v4/token")
-                .userInfoUri("https://www.googleapis.com/oauth2/v3/userinfo")
-                .userNameAttributeName(IdTokenClaimNames.SUB)
-                .jwkSetUri("https://www.googleapis.com/oauth2/v3/certs")
-                .clientName("Google")
-                .build();
-    }
-     */
 }
