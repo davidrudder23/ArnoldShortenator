@@ -1,13 +1,23 @@
-#spring:
-#  security:
-#    oauth2:
-#      client:
-#        registration:
-#          github:
-#            clientId: 4f9297cad846e3dc543e
-#            clientSecret:  3b867e2ce44f4d32f5ff1d6248fa505808e3e79a
-
 spring:
+  datasource:
+    url: jdbc:mysql://${MYSQLHOST:localhost}:${MYSQLPORT:3306}/${MYSQLDATABASE:urlshortener}
+    username: ${MYSQLUSER:reliable}
+    password: ${MYSQLPASSWORD:reliable}
+  web:
+    resources:
+      static-locations[0]: file:src/main/resources/static/
+      static-locations[1]: classpath:/static/
+      static-path-pattern: /static/**
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 698842898054-963r6hqrqviscogli6qt5075nms01ff6.apps.googleusercontent.com
+            clientSecret: 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
+            scope:
+              - email
+              - profile
   thymeleaf: # Thymeleaf
     cache: false
     mode: HTML

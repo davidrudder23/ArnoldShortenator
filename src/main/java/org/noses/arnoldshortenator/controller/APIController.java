@@ -14,15 +14,16 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
+/*@RestController
 @RequestMapping(value="api", produces="application/json")
+*/
 @Slf4j
 public class APIController {
 
     @Autowired
     ArnoldShortenatorService service;
 
-    @GetMapping(value="/{slug:^.*(?!logout|user)}/**")
+    @GetMapping(value="/{slug:^.*(?!logout|user|login.html)}/**")
     public URLMapping getBySlug(HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal, @PathVariable String slug) {
         log.info("slug={}", slug);
         log.info("principal={}", principal);
