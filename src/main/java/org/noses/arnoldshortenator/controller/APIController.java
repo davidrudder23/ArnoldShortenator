@@ -14,9 +14,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 
-/*@RestController
+@RestController
 @RequestMapping(value="api", produces="application/json")
-*/
 @Slf4j
 public class APIController {
 

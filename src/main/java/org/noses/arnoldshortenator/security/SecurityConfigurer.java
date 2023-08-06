@@ -31,7 +31,7 @@ public class SecurityConfigurer {
                 .authorizeHttpRequests(authCustomizer -> {
                     try {
                         authCustomizer
-                                .requestMatchers(HttpMethod.GET, "/", "/login.html", "/login/**", "/oauth/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/", "/api/**", "/login.html", "/login/**", "/oauth/**").permitAll()
                                 .anyRequest().authenticated()
                                 .and().formLogin().loginPage("/login.html")
                                 .permitAll()
