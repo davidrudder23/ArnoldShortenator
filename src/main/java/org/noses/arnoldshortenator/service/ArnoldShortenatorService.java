@@ -5,6 +5,7 @@ import org.noses.arnoldshortenator.database.AccessLog;
 import org.noses.arnoldshortenator.database.AccessLogRepository;
 import org.noses.arnoldshortenator.database.URLMapping;
 import org.noses.arnoldshortenator.database.URLMappingRepository;
+import org.noses.arnoldshortenator.security.CustomOAuth2User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ public class ArnoldShortenatorService {
     @Autowired
     AccessLogRepository accessLogRepository;
 
-    public boolean saveURLMapping(URLMapping urlMapping) {
+    public boolean saveURLMapping(URLMapping urlMapping, String author) {
         if (urlMapping==null) {
             log.info("Trying to save a null url mapping");
             return false;
@@ -54,6 +55,8 @@ public class ArnoldShortenatorService {
 
         // Make sure we're not saving the interpreted url
         urlMapping.setInterpretedDestinationURL(null);
+
+        urlMapping.setAuthor(author);
 
         urlMappingRepository.save(urlMapping);
 
@@ -136,7 +139,7 @@ public class ArnoldShortenatorService {
 
         URLMapping mapping = mappingOptional.get();
 
-        if (owner.equals("kvjnfdvkjdf")) {
+        if (!owner.equals(mapping.getAuthor())) {
             return false;
         }
 
@@ -145,10 +148,10 @@ public class ArnoldShortenatorService {
     }
 
 
-    public String getAccessedByFromOAuthPrincipal(OAuth2User principal) {
+    public String getAccessedByFromOAuthPrincipal(CustomOAuth2User principal) {
         String accessedBy = "unknown";
-        if (principal != null && principal.getName() != null) {
-            accessedBy = principal.getName();
+        if (principal != null && principal.getEmail() != null) {
+            accessedBy = principal.getEmail();
         }
         return accessedBy;
     }

@@ -3,6 +3,7 @@ package org.noses.arnoldshortenator.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.noses.arnoldshortenator.database.URLMapping;
+import org.noses.arnoldshortenator.security.CustomOAuth2User;
 import org.noses.arnoldshortenator.service.ArnoldShortenatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,7 +51,9 @@ public class WebController {
         String path = request.getRequestURI();
         log.info("path={}", path);
 
-        URLMapping mapping = service.getURLMapping(slug, path, service.getAccessedByFromOAuthPrincipal(principal), request.getHeader("Referer"));
+        CustomOAuth2User oauthUser = (CustomOAuth2User) principal;
+
+        URLMapping mapping = service.getURLMapping(slug, path, service.getAccessedByFromOAuthPrincipal(oauthUser), request.getHeader("Referer"));
         log.info("mapping={}", mapping);
         if (mapping == null) {
             throw new ResponseStatusException(

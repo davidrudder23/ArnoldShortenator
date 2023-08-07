@@ -1,33 +1,55 @@
 <html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Arnold Shortenator - Login</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width"/>
+    <base href="/"/>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <script src="/static/common.js"></script>
+    <script src="/static/typeahead.js"></script>
+
+    <!-- Option 1: Include in HTML -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+</head>
 <body>
-<div>
-    <h2>Please Login</h2>
-    <br/>
-</div>
-<div>
-    <h4><a th:href="@{/oauth2/authorization/google}">Login with Google</a></h4>
-</div>
-<div><p>OR</p></div>
 
-<form th:action="@{/login}" method="post" style="max-width: 400px; margin: 0 auto;">
-    <div class="border border-secondary rounded p-3">
-        <div th:if="${param.error}">
-            <p class="text-danger">Invalid username or password.</p>
-        </div>
-        <div th:if="${param.logout}">
-            <p class="text-warning">You have been logged out.</p>
+<div class="container">
+    <div class="header clearfix">
+        <nav>
+            <ul class="nav nav-pills pull-right">
+                <li role="presentation" class="active"><a href="#">Home</a></li>
+                <li role="presentation"><a href="#">About</a></li>
+            </ul>
+        </nav>
+        <h3 class="text-muted">Arnold Shortenator</h3>
+    </div>
+
+    <div class="jumbotron">
+        <div>
+            <h2>Please Login</h2>
+            <br/>
         </div>
         <div>
-            <p><input type="email" name="email" required class="form-control" placeholder="E-mail" /></p>
-        </div>
-        <div>
-            <p><input type="password" name="pass" required class="form-control" placeholder="Password" /></p>
-        </div>
-        <div>
-            <p><input type="submit" value="Login" class="btn btn-primary" /></p>
+
+
+            <h4><a th:href="@{/oauth2/authorization/google}"><img src="https://onymos.com/wp-content/uploads/2020/10/google-signin-button-1024x260.png" style="max-width: 256px"/></a></h4>
         </div>
     </div>
-</form>
+</div>
+
 </body>
 </html>
