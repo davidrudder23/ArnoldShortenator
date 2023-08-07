@@ -5,6 +5,7 @@ import org.noses.arnoldshortenator.database.AccessLog;
 import org.noses.arnoldshortenator.database.AccessLogRepository;
 import org.noses.arnoldshortenator.database.URLMapping;
 import org.noses.arnoldshortenator.database.URLMappingRepository;
+import org.noses.arnoldshortenator.security.CustomOAuth2User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
@@ -145,10 +146,10 @@ public class ArnoldShortenatorService {
     }
 
 
-    public String getAccessedByFromOAuthPrincipal(OAuth2User principal) {
+    public String getAccessedByFromOAuthPrincipal(CustomOAuth2User principal) {
         String accessedBy = "unknown";
-        if (principal != null && principal.getName() != null) {
-            accessedBy = principal.getName();
+        if (principal != null && principal.getEmail() != null) {
+            accessedBy = principal.getEmail();
         }
         return accessedBy;
     }

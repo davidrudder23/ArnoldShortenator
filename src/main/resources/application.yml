@@ -3,6 +3,9 @@ spring:
     url: jdbc:mysql://${MYSQLHOST:localhost}:${MYSQLPORT:3306}/${MYSQLDATABASE:urlshortener}
     username: ${MYSQLUSER:reliable}
     password: ${MYSQLPASSWORD:reliable}
+  jpa:
+    hibernate:
+      ddl-auto: update
   web:
     resources:
       static-locations[0]: file:src/main/resources/static/

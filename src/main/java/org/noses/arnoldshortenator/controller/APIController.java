@@ -3,6 +3,7 @@ package org.noses.arnoldshortenator.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.noses.arnoldshortenator.database.URLMapping;
+import org.noses.arnoldshortenator.security.CustomOAuth2User;
 import org.noses.arnoldshortenator.service.ArnoldShortenatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class APIController {
         String path = request.getRequestURI();
         log.info("path={}", path);
 
-        URLMapping mapping = service.getURLMapping(slug, path, service.getAccessedByFromOAuthPrincipal(principal), request.getHeader("Referer"));
+        URLMapping mapping = service.getURLMapping(slug, path, service.getAccessedByFromOAuthPrincipal((CustomOAuth2User) principal), request.getHeader("Referer"));
         if (mapping == null) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "entity not found"
@@ -56,6 +57,6 @@ public class APIController {
 
     @DeleteMapping(value="/{slug}")
     public Boolean delete(HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal, @PathVariable String slug) {
-        return service.delete(slug, service.getAccessedByFromOAuthPrincipal(principal));
+        return service.delete(slug, service.getAccessedByFromOAuthPrincipal((CustomOAuth2User) principal));
     }
 }
