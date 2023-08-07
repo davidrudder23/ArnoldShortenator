@@ -48,6 +48,11 @@ console.log("deleting "+slug)
             url: "/api/"+encodeURIComponent(slug),
             success: function() {
                 getMatches($("#slug").val());
+            },
+            error: function(httpObj, textStatus) {
+                if(httpObj.status==401) {
+                    window.location="/login.html";
+                }
             }
         });
 }
