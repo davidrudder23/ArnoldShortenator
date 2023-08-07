@@ -25,7 +25,7 @@ function getMatches(slug) {
                 }
                 results += `
                         <div class="col-lg-6">
-                                        <h4>`+value.slug+`&nbsp;<i class="bi bi-pencil" onclick="edit('`+value.slug+`')"></i><i class="bi bi-trash" onclick='deleteMapping("`+value.slug+`")'></i></h4>
+                                        <h4>`+value.slug+`&nbsp;<i class="bi bi-trash" onclick='deleteMapping("`+value.slug+`")'></i></h4>
                                         <p><a href="/`+value.slug+`">`+value.destinationURL+`</a></p>
                                     </div>
                                     `;

@@ -24,6 +24,11 @@ public class WebController {
     public ModelAndView indexHtml() {
         return new ModelAndView("index.html");
     }
+    @GetMapping(value="/login.html")
+    public ModelAndView login() {
+        return new ModelAndView("login.html");
+    }
+
     @GetMapping(value="/")
     public ModelAndView index() {
         return new ModelAndView("index.html");

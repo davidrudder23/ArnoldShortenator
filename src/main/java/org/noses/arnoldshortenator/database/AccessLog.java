@@ -16,7 +16,7 @@ public class AccessLog {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JsonIgnore
     URLMapping urlMapping;
 

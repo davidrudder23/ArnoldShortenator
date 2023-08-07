@@ -31,7 +31,4 @@ public class URLMapping {
 
     private String interpretedDestinationURL;
 
-    @OneToMany(mappedBy = "urlMapping", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    List<AccessLog> accessLog;
 }

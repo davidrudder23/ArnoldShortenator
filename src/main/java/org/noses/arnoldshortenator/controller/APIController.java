@@ -22,7 +22,7 @@ public class APIController {
     @Autowired
     ArnoldShortenatorService service;
 
-    @GetMapping(value="/{slug:^.*(?!logout|user)}/**")
+    @GetMapping(value="/{slug:^.*(?!logout|user|login.html)}/**")
     public URLMapping getBySlug(HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal, @PathVariable String slug) {
         log.info("slug={}", slug);
         log.info("principal={}", principal);
