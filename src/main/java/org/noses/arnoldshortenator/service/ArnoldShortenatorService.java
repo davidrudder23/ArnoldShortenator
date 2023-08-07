@@ -23,7 +23,7 @@ public class ArnoldShortenatorService {
     @Autowired
     AccessLogRepository accessLogRepository;
 
-    public boolean saveURLMapping(URLMapping urlMapping) {
+    public boolean saveURLMapping(URLMapping urlMapping, String author) {
         if (urlMapping==null) {
             log.info("Trying to save a null url mapping");
             return false;
@@ -55,6 +55,8 @@ public class ArnoldShortenatorService {
 
         // Make sure we're not saving the interpreted url
         urlMapping.setInterpretedDestinationURL(null);
+
+        urlMapping.setAuthor(author);
 
         urlMappingRepository.save(urlMapping);
 
@@ -137,7 +139,7 @@ public class ArnoldShortenatorService {
 
         URLMapping mapping = mappingOptional.get();
 
-        if (owner.equals("kvjnfdvkjdf")) {
+        if (!owner.equals(mapping.getAuthor())) {
             return false;
         }
 

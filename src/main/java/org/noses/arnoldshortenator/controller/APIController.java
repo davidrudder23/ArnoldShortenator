@@ -51,8 +51,8 @@ public class APIController {
     }
 
     @PostMapping
-    public Boolean add(@RequestBody URLMapping mapping) {
-        return service.saveURLMapping(mapping);
+    public Boolean add(@RequestBody URLMapping mapping, @AuthenticationPrincipal OAuth2User principal) {
+        return service.saveURLMapping(mapping, service.getAccessedByFromOAuthPrincipal((CustomOAuth2User) principal));
     }
 
     @DeleteMapping(value="/{slug}")

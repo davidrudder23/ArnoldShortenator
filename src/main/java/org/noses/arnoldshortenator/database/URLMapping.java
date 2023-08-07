@@ -31,4 +31,6 @@ public class URLMapping {
 
     private String interpretedDestinationURL;
 
+    private String author;
+
 }
